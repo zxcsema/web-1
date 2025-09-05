@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторная работа №1</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Шапка с использованием селектора элемента и каскадирования */
+        header {
+            background: linear-gradient(135deg, #2c3e50, #1a2530);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Наследование и каскадирование */
+        header h1 {
+            font-family: cursive, 'Comic Sans MS', sans-serif;
+            font-size: 32px;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header h2 {
+            font-family: cursive, 'Comic Sans MS', sans-serif;
+            font-size: 22px;
+            color: #e0e0e0;
+            font-weight: 400;
+        }
+
+        /* Основное содержимое с блочной версткой */
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Стили для графика */
+        .graph-container {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        svg {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fafafa;
+        }
+
+        /* Стили для формы */
+        .form-container {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Стили для групп формы с использованием селекторов потомков */
+        .form-container > div {
+            margin-bottom: 25px;
+        }
+
+        /* Стили для заголовков групп формы */
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        /* Стили для радиокнопок с использованием селекторов дочерних элементов */
+        .radio-group > label {
+            display: inline-block;
+            margin: 8px 15px 8px 0;
+            cursor: pointer;
+            padding: 10px 15px;
+            background: #f0f2f5;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .radio-group > label:hover {
+            background: #e0e6ed;
+        }
+
+        /* Стили для текстового поля */
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #4361ee;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Стили для кнопок с использованием селекторов классов */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #4361ee;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3a56d4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        /* Стили для таблицы результатов */
+        .table-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Стили для заголовков таблицы */
+        th {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* Стили для ячеек таблицы */
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Стили для строк таблицы */
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tr:hover {
+            background: #f0f2f5;
+        }
+
+        /* Стили для попаданий и промахов */
+        .hit {
+            background-color: rgba(76, 201, 240, 0.1) !important;
+        }
+
+        .hit td:first-child {
+            border-left: 4px solid #4cc9f0;
+        }
+
+        .miss {
+            background-color: rgba(247, 37, 133, 0.1) !important;
+        }
+
+        .miss td:first-child {
+            border-left: 4px solid #f72585;
+        }
+
+        /* Футер */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .vt {
+            width: 40px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .vt:hover {
+            transform: scale(1.3);
+        }
+
+        /* Новые стили для блокировки кнопок */
+        .disabled-option {
+            opacity: 0.5;
+            cursor: not-allowed !important;
+        }
+
+        .disabled-option input {
+            cursor: not-allowed !important;
+        }
+
+        .info-message {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8f4fd;
+            border-radius: 4px;
+            color: #2c3e50;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .form-group.highlight {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Веб-программирование, Лабораторная работа №1</h1>
+        <h2>Паршуков Семён Алексеевич, P3214, Вариант 467027</h2>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="graph-container">
+            <svg height="300" width="300" xmlns="http://www.w3.org/2000/svg">
+                <!-- Координатные оси -->
+                <line stroke="black" x1="0" x2="300" y1="150" y2="150"></line>
+                <line stroke="black" x1="150" x2="150" y1="0" y2="300"></line>
+                <polygon fill="black" points="150,0 144,15 156,15"></polygon>
+                <polygon fill="black" points="300,150 285,156 285,144"></polygon>
+
+                <!-- Разметка осей -->
+                <line stroke="black" x1="180" x2="180" y1="155" y2="145"></line>
+                <line stroke="black" x1="210" x2="210" y1="155" y2="145"></line>
+                <line stroke="black" x1="240" x2="240" y1="155" y2="145"></line>
+                <line stroke="black" x1="270" x2="270" y1="155" y2="145"></line>
+
+                <line stroke="#4361ee" x1="30" x2="30" y1="155" y2="145"></line>
+                <line stroke="#4361ee" x1="60" x2="60" y1="155" y2="145"></line>
+                <line stroke="#4361ee" x1="90" x2="90" y1="155" y2="145"></line>
+                <line stroke="#4361ee" x1="120" x2="120" y1="155" y2="145"></line>
+
+                <line stroke="#4361ee" x1="145" x2="155" y1="120" y2="120"></line>
+                <line stroke="#4361ee" x1="145" x2="155" y1="90" y2="90"></line>
+                <line stroke="#4361ee" x1="145" x2="155" y1="60" y2="60"></line>
+                <line stroke="#4361ee" x1="145" x2="155" y1="30" y2="30"></line>
+
+                <line stroke="#4361ee" x1="145" x2="155" y1="180" y2="180"></line>
+                <line stroke="#4361ee" x1="145" x2="155" y1="210" y2="210"></line>
+                <line stroke="#4361ee" x1="145" x2="155" y1="240" y2="240"></line>
+                <line stroke="#4361ee" x1="145" x2="155" y1="270" y2="270"></line>
+
+                <!-- Подписи значений -->
+                <text fill="#4361ee" x="170" y="140">R/2</text>
+                <text fill="#4361ee" x="205" y="140">R</text>
+                <text fill="#4361ee" x="225" y="140">3R/2</text>
+                <text fill="#4361ee" x="260" y="140">2R</text>
+
+                <text fill="#4361ee" x="14" y="140">-2R</text>
+                <text fill="#4361ee" x="40" y="140">-3R/2</text>
+                <text fill="#4361ee" x="82" y="140">-R</text>
+                <text fill="#4361ee" x="107" y="140">-R/2</text>
+
+                <text fill="#4361ee" x="160" y="35">2R</text>
+                <text fill="#4361ee" x="160" y="65">3R/2</text>
+                <text fill="#4361ee" x="160" y="95">R</text>
+                <text fill="#4361ee" x="160" y="125">R/2</text>
+
+                <text fill="#4361ee" x="160" y="183">-R/2</text>
+                <text fill="#4361ee" x="160" y="213">-R</text>
+                <text fill="#4361ee" x="160" y="243">-3R/2</text>
+                <text fill="#4361ee" x="160" y="273">-2R</text>
+
+                <text fill="#4361ee" x="285" y="140">X</text>
+                <text fill="#4361ee" x="160" y="15">Y</text>
+
+                <!-- Точка -->
+                <circle id="point" cx="150" cy="150" r="4" fill="red" stroke="white" visibility="hidden"/>
+
+                <!-- Области попадания -->
+                <polygon points="150,150 120,150 150,120" fill-opacity="0.4" stroke="#4361ee" fill="#4361ee"></polygon>
+                <rect x="150" y="150" width="30" height="60" fill-opacity="0.4" stroke="#4361ee" fill="#4361ee"></rect>
+                <path d="M 150 150 L 150 120 A30,30 0 0,1 180,150 Z" fill-opacity="0.4" stroke="#4361ee" fill="#4361ee"></path>
+            </svg>
+        </div>
+
+        <div class="form-container">
+            <form id="coordinates">
+                <div class="form-group" id="x-group">
+                    <label>Выберите значение X:</label>
+                    <div class="radio-group">
+                        <label id="label-x--3"><input type="radio" name="x-parameter" value="-3" id="1" required> -3</label>
+                        <label id="label-x--2"><input type="radio" name="x-parameter" value="-2" id="2"> -2</label>
+                        <label id="label-x--1"><input type="radio" name="x-parameter" value="-1" id="3"> -1</label>
+                        <label id="label-x-0"><input type="radio" name="x-parameter" value="0" id="4"> 0</label>
+                        <label id="label-x-1"><input type="radio" name="x-parameter" value="1" id="5"> 1</label>
+                        <label id="label-x-2"><input type="radio" name="x-parameter" value="2" id="6"> 2</label>
+                        <label id="label-x-3"><input type="radio" name="x-parameter" value="3" id="7"> 3</label>
+                        <label id="label-x-4"><input type="radio" name="x-parameter" value="4" id="8"> 4</label>
+                        <label id="label-x-5"><input type="radio" name="x-parameter" value="5" id="9"> 5</label>
+                    </div>
+                    <div class="info-message" id="x-info">
+                        При R=5 доступны только значения X ≤ 2 (R/2 = 2.5)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Введите значение Y:</label>
+                    <div class="input-group">
+                        <input id="Y-text" type="number" name="y-parameter" min="-3" max="5" placeholder="Число от -3 до 5" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Выберите значение R:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="r-parameter" value="1" required> 1</label>
+                        <label><input type="radio" name="r-parameter" value="2"> 2</label>
+                        <label><input type="radio" name="r-parameter" value="3"> 3</label>
+                        <label><input type="radio" name="r-parameter" value="4"> 4</label>
+                        <label><input type="radio" name="r-parameter" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="submit" type="submit" class="btn btn-primary">Отправить</button>
+                    <button id="clear" type="reset" class="btn btn-secondary">Очистить таблицу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Таблица результатов -->
+    <div class="table-container">
+        <table id="check" class="table-check">
+            <thead>
+            <tr class="table-header">
+                <th scope="col">X</th>
+                <th scope="col">Y</th>
+                <th scope="col">R</th>
+                <th scope="col">Попал?</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Время работы скрипта, микросек</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <div>
+            <a href="https://se.ifmo.ru">
+                <h1 class="vt"> se.ifmo.ru</h1>
+            </a>
+        </div>
+    </footer>
+</div>
+
+<script>
+    const table = document.getElementById("check");
+    let sessionStorageSize = window.sessionStorage.length;
+
+    for (let i = 1; i <= sessionStorageSize; i++) {
+        let jsonData = window.sessionStorage.getItem(i.toString());
+        if (jsonData) {
+            let data = jsonData.split(", ");
+            addTableRow(data[0], data[1], data[2], data[3], data[4], data[5]);
+        }
+    }
+
+    function disableButton() {
+    const selectedR = $("input[name='r-parameter']:checked").val();
+
+    $('.radio-group label').removeClass('disabled-option');
+    $('input[name="x-parameter"]').prop('disabled', false);
+
+    if (selectedR) {
+        const rValue = parseFloat(selectedR);
+        const maxAllowed = Math.floor(rValue / 2);
+
+        $('input[name="x-parameter"]').each(function() {
+            const xValue = parseFloat($(this).val());
+            if (Math.abs(xValue) > maxAllowed) {
+                const labelId = '#label-x-' + (xValue >= 0 ? xValue : '-' + Math.abs(xValue));
+                $(labelId).addClass('disabled-option');
+                $(this).prop('disabled', true);
+            }
+        });
+
+
+
+        if ($('input[name="x-parameter"]:checked').prop('disabled')) {
+            $('input[name="x-parameter"]:checked').prop('checked', false);
+            const firstAvailable = $('input[name="x-parameter"]:not(:disabled)').first();
+            if (firstAvailable.length) {
+                firstAvailable.prop('checked', true);
+            }
+        }
+    }
+
+    pointing();
+}
+
+    $(document).ready(function() {
+        disableButton();
+
+        $('input[name="r-parameter"]').change(disableButton);
+        $('input[name="x-parameter"]').change(pointing);
+        $("#Y-text").on("input", pointing);
+    });
+
+    $("#submit").on("click", function (e) {
+        e.preventDefault();
+        let now = new Date();
+        let month = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+
+        let data = {
+            "x": $("input[name='x-parameter']:checked").val(),
+            "y": $("input[name='y-parameter']").val(),
+            "r": $("input[name='r-parameter']:checked").val()
+        };
+
+        const x = parseFloat(data.x);
+        const y = parseFloat(data.y);
+        const r = parseFloat(data.r);
+
+        // Валидация данных
+        if (isNaN(x) || isNaN(y) || isNaN(r) || y < -3 || y > 5) {
+            alert("Некорректные данные. Убедитесь, что Y находится в диапазоне от -3 до 5 и является числом.");
+            return;
+        }
+
+        // Отправка POST-запроса с использованием AJAX
+        $.ajax({
+            url: "/fcgi-bin/app.jar",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            dataType: "json",
+            success: function (response) {
+                if (response.error != null) {
+                    alert("ошибка при получении ответа с сервера");
+                    console.log(response);
+                } else {
+                    let dateStr = now.getHours().toString() + ":" +
+                                 now.getMinutes().toString() + ":" +
+                                 (now.getSeconds() < 10 ? "0" + now.getSeconds().toString() : now.getSeconds().toString()) + " " +
+                                 now.getDate() + " " +
+                                 month[now.getMonth()] + " " +
+                                 now.getFullYear();
+
+                    addTableRow(data.x, data.y, data.r, response.result ? "Да" : "Нет", dateStr, response.time);
+
+                    sessionStorageSize++;
+                    window.sessionStorage.setItem(
+                        sessionStorageSize.toString(),
+                        `${data.x}, ${data.y}, ${data.r}, ${response.result ? "Да" : "Нет"}, ${dateStr}, ${response.time}`
+                    );
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Ошибка:", textStatus, errorThrown);
+                alert("Произошла ошибка при отправке данных на сервер.");
+            }
+        });
+    });
+
+    $("#clear").on("click", function (e) {
+        e.preventDefault();
+        $("#check tbody").empty();
+        sessionStorageSize = 0;
+        window.sessionStorage.clear();
+    });
+
+    function addTableRow(x, y, r, result, date, time) {
+        let newRow = document.createElement("tr");
+        newRow.innerHTML = `
+            <td>${x}</td>
+            <td>${y}</td>
+            <td>${r}</td>
+            <td>${result}</td>
+            <td>${date}</td>
+            <td>${time}</td>
+        `;
+
+        if (result === "Да") {
+            newRow.className = "hit";
+        } else {
+            newRow.className = "miss";
+        }
+
+        document.querySelector("#check tbody").prepend(newRow);
+    }
+
+    // Обновление положения точки на графике
+    function pointing() {
+        const svgCenterX = 150;
+        const svgCenterY = 150;
+
+        const x = $("input[name='x-parameter']:checked").val();
+        const y = $("input[name='y-parameter']").val();
+        const r = $("input[name='r-parameter']:checked").val();
+
+        if (!isNaN(+x) && !isNaN(+y) && !isNaN(+r) && +y >= -3 && +y <= 5) {
+            const coordinateX = svgCenterX + x / r * 60;
+            const coordinateY = svgCenterY - y / r * 60;
+
+            let pointElement = document.getElementById('point');
+            pointElement.setAttribute('cx', "" + coordinateX);
+            pointElement.setAttribute('cy', "" + coordinateY);
+            pointElement.setAttribute('visibility', 'visible');
+        }
+    }
+</script>
+</body>
+</html>
